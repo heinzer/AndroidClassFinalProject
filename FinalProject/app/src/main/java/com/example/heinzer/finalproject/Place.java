@@ -1,10 +1,12 @@
 package com.example.heinzer.finalproject;
 
+import java.io.Serializable;
+
 /**
  * Created by heinzer on 11/4/2016.
  */
 
-public class Place {
+public class Place implements Serializable {
 
     private double longitude;
     private double latitude;
