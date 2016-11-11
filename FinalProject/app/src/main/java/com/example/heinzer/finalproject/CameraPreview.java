@@ -21,7 +21,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public CameraPreview(Context context, Camera camera) {
         super(context);
         mCamera = camera;
-
         mHolder = getHolder();
         mHolder.addCallback(this);
         // deprecated but required on Android 3.0 and less
@@ -40,7 +39,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // Empty. Take care of releasing the Camera preview in your activity.
+        // Make sure to stop the preview and release the camera
+        // or else itll crash when you try to open the camera again
+        mCamera.stopPreview();
+        mCamera.setPreviewCallback(null);
+        mCamera.release();
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
