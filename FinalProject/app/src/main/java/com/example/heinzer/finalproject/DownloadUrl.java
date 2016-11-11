@@ -41,7 +41,7 @@ public class DownloadUrl {
             br.close();
 
         } catch (Exception e) {
-            System.out.println("Exception"+ e.toString());
+            System.out.println("Exception: "+ e.toString());
         } finally {
             iStream.close();
             urlConnection.disconnect();

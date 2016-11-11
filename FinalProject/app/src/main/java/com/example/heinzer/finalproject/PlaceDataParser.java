@@ -18,6 +18,8 @@ public class PlaceDataParser {
         JSONArray jsonArray = null;
         JSONObject jsonObject;
 
+        System.out.println("PLaces: "+ jsonData);
+
         try {
             Log.d("Places", "parse");
             jsonObject = new JSONObject((String) jsonData);

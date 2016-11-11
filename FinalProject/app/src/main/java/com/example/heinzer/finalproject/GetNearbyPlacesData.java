@@ -35,6 +35,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     @Override
     protected void onPostExecute(String result) {
         System.out.println("GooglePlacesReadTask"+ "onPostExecute Entered");
+        System.out.println("Result: " + result);
         List<HashMap<String, String>> nearbyPlacesList = null;
         PlaceDataParser dataParser = new PlaceDataParser();
         nearbyPlacesList =  dataParser.parse(result);

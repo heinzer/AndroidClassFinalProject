@@ -72,9 +72,11 @@ public class PlacesRetriever {
             Toast toast = Toast.makeText(a.getApplicationContext(), "Location based services not available", Toast.LENGTH_SHORT);
 
             String url = getUrl(latLocation.getLatitude(), latLocation.getLongitude(), locationsTypes);
+            Object[] DataTransfer = new Object[1];
+            DataTransfer[0] = url;
             GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
             getNearbyPlacesData.setretriever(this);
-            getNearbyPlacesData.execute();
+            getNearbyPlacesData.execute(DataTransfer);
 
             //updateWithNewLocation(l);
             //add automated locaton updates later
@@ -118,7 +120,7 @@ public class PlacesRetriever {
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
         googlePlacesUrl.append("&type=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&key=" + "AIzaSyDTjyR9LvEXNMEz3EmolnRhygiMC_RuEKg");
+        googlePlacesUrl.append("&key=" + "AIzaSyAYXpuEkh14deoc_ELfoHmQiCGUROT1py4");
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
     }
