@@ -19,7 +19,7 @@
             android:id="@+id/startgame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Game"/>
+            android:text="@string/start"/>
 
         <Button
             android:id="@+id/placeslist"

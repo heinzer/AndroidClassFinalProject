@@ -93,6 +93,7 @@ public class PlacesRetriever {
 
 
     protected void setNearbyPlaces(List<HashMap<String, String>> npl){
+        System.out.println("Now setting locations to:" + npl);
         nearbyPlacesList = npl;
     }
 

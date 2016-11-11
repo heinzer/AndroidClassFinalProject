@@ -21,4 +21,32 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         />
+
+    <LinearLayout
+        android:id="@+id/mLlayoutBottomButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical" >
+        <Button
+            android:id="@+id/firstLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashes"/>
+        <Button
+            android:id="@+id/secondLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashes"/>
+        <Button
+            android:id="@+id/thirdLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashes"/>
+        <Button
+            android:id="@+id/fourthLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dashes"/>
+    </LinearLayout>
 </RelativeLayout>

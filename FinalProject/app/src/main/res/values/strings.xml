@@ -2,6 +2,8 @@
     <string name="app_name">FinalProject</string>
 
     <!-- String Resources for Camera view -->
+    <string name="start">Start Game</string>
     <string name="loading">Loading . . .</string>
+    <string name="dashes">- -</string>
     <string name="back_name">Back</string>
 </resources>

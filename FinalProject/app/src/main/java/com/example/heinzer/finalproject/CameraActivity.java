@@ -6,16 +6,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by duchesneaur on 11/10/2016.
  */
 public class CameraActivity extends Activity {
+    PlacesRetriever pr;
 
     private Camera camera;
     private CameraPreview preview;
@@ -23,6 +29,9 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        pr = new PlacesRetriever();
+        pr.askPermission(this);
 
         // retrieve the camera
         camera = getCameraInstance();
@@ -41,6 +50,8 @@ public class CameraActivity extends Activity {
                 startActivity(backIntent);
             }
         });
+
+
     }
 
     public static Camera getCameraInstance(){
@@ -65,6 +76,19 @@ public class CameraActivity extends Activity {
         } else {
             // no camera
             return false;
+        }
+    }
+
+    private void printLocations(){
+        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();
+        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+            double lat = Double.parseDouble(googlePlace.get("lat"));
+            double lng = Double.parseDouble(googlePlace.get("lng"));
+            String placeName = googlePlace.get("place_name");
+            String vicinity = googlePlace.get("vicinity");
+            LatLng latLng = new LatLng(lat, lng);
+            System.out.println("placeName: " + placeName);
         }
     }
 }
