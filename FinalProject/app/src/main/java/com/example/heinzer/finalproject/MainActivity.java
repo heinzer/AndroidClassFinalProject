@@ -24,12 +24,13 @@ public class MainActivity extends Activity {
         pr = new PlacesRetriever();
         pr.askPermission(this);
 
-        Button startGameButton = (Button) findViewById(R.id.startgame);
+        final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent startGameIntent = new Intent(this, CameraActivity.class);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startGameButton.setText(getResources().getString(R.string.loading));
                 startActivity(startGameIntent);
             }
         });

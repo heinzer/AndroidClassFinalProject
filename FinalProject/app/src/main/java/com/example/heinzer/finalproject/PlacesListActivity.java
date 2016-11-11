@@ -30,6 +30,7 @@ public class PlacesListActivity extends ListActivity {
         Button mainMenuButton = (Button) findViewById(R.id.mainmenu);
         mainMenuButton.getBackground().setColorFilter(0xFFcc4b69, PorterDuff.Mode.MULTIPLY);
         final Intent mainMenuIntent = new Intent(this, MainActivity.class);
+        mainMenuIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mainMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
