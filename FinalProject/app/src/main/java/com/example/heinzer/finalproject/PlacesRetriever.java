@@ -35,9 +35,9 @@ public class PlacesRetriever {
     private Location latLocation;
 
     private String locationsTypes = "restaurant";
-    List<HashMap<String, String>> nearbyPlacesList = null;
-    private List<HashMap<String, String>> chosenPlaces = null;
-    private HashMap<String, String> chosenPlace = null;
+    List<Place> nearbyPlacesList = null;
+    private List<Place> chosenPlaces = null;
+    private Place chosenPlace = null;
 
     /**
      * Returns the User's current Location
@@ -48,18 +48,10 @@ public class PlacesRetriever {
     }
 
     /**
-     * Returns the List of places within the specified radius! parse method:
-     * for (int i = 0; i < nearbyPlacesList.size(); i++) {
-     HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
-     double lat = Double.parseDouble(googlePlace.get("lat"));
-     double lng = Double.parseDouble(googlePlace.get("lng"));
-     String placeName = googlePlace.get("place_name");
-     String vicinity = googlePlace.get("vicinity");
-     LatLng latLng = new LatLng(lat, lng);
-     }
+     * Returns the List of places within the specified radius!
      * @return The list
      */
-    public List<HashMap<String, String>> getplaces(){
+    public List<Place> getplaces(){
         return nearbyPlacesList;
     }
 
@@ -90,11 +82,11 @@ public class PlacesRetriever {
 
     }
 
-    public List<HashMap<String, String>> getPlacesForGame(){
+    public List<Place> getPlacesForGame(){
         return chosenPlaces;
     }
 
-    public HashMap<String, String> getChosenPlace(){
+    public Place getChosenPlace(){
         return chosenPlace;
     }
 
@@ -158,7 +150,7 @@ public class PlacesRetriever {
      * Sets the places list. Called by the background thread. You should not call.
      * @param npl list of places
      */
-    protected void setNearbyPlaces(List<HashMap<String, String>> npl){
+    protected void setNearbyPlaces(List<Place> npl){
         nearbyPlacesList = npl;
     }
 

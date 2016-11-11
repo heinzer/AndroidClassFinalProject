@@ -13,6 +13,7 @@ public class Place implements Serializable {
     private long id;
     private String name;
     private String address;
+    private String vicinity;
 
     public String getAddress(){
         return address;
@@ -53,6 +54,11 @@ public class Place implements Serializable {
     public void setLatitude(double latitude){
         this.latitude = latitude;
     }
+
+    public void setVicinity(String vicinity){this.vicinity = vicinity;}
+
+    public String getVicinity(){return vicinity;}
+
 
     @Override
     public String toString(){

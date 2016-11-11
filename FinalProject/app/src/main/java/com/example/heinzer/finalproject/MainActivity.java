@@ -80,13 +80,13 @@ public class MainActivity extends Activity {
 
 
     private void printLocations(){
-        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();
+        List<Place> nearbyPlacesList =  pr.getplaces();
         for (int i = 0; i < nearbyPlacesList.size(); i++) {
-            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
-            String placeName = googlePlace.get("place_name");
-            String vicinity = googlePlace.get("vicinity");
+            Place googlePlace = nearbyPlacesList.get(i);
+            double lat = googlePlace.getLatitude();
+            double lng = googlePlace.getLongitude();
+            String placeName = googlePlace.getName();
+            String vicinity = googlePlace.getVicinity();
             LatLng latLng = new LatLng(lat, lng);
             System.out.println("placeName: " + placeName);
         }
