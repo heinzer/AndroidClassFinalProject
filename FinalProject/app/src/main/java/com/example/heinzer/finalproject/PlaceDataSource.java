@@ -77,8 +77,8 @@ public class PlaceDataSource {
         place.setId(cursor.getLong(0));
         place.setName(cursor.getString(1));
         place.setAddress(cursor.getString(2));
-        place.setLatitude(cursor.getDouble(4));
-        place.setLongitude(cursor.getDouble(5));
+        place.setLatitude(cursor.getDouble(3));
+        place.setLongitude(cursor.getDouble(4));
         return place;
     }
 }
