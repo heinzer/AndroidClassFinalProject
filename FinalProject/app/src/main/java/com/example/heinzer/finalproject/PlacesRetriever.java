@@ -38,6 +38,7 @@ public class PlacesRetriever {
     List<Place> nearbyPlacesList = null;
     private List<Place> chosenPlaces = null;
     private Place chosenPlace = null;
+    private boolean isReady = false;
 
     /**
      * Returns the User's current Location
@@ -53,6 +54,10 @@ public class PlacesRetriever {
      */
     public List<Place> getplaces(){
         return nearbyPlacesList;
+    }
+
+    public boolean isDataReady(){
+        return isReady;
     }
 
     public void choosePlaces(){
@@ -151,7 +156,14 @@ public class PlacesRetriever {
      * @param npl list of places
      */
     protected void setNearbyPlaces(List<Place> npl){
+
         nearbyPlacesList = npl;
+        if(nearbyPlacesList == null){
+            System.out.println("Um, the list is null when setting");
+            isReady = false;
+        }else{
+            isReady = true;
+        }
     }
 
 

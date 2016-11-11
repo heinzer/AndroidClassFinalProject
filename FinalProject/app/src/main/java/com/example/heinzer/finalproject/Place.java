@@ -14,6 +14,7 @@ public class Place implements Serializable {
     private String name;
     private String address;
     private String vicinity;
+    private String photoReference;
 
     public String getAddress(){
         return address;
