@@ -1,52 +1,40 @@
 package com.example.heinzer.finalproject;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.hardware.Camera;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
-    private Camera camera;
-    private CameraPreview preview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // retrieve the camera
-        camera = getCameraInstance();
+        Button startGameButton = (Button) findViewById(R.id.startgame);
+        startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
+/*        final Intent startGameIntent = new Intent(this, NewTaskActivity.class);
+        startGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(startGameIntent);
+            }
+        });*/
 
-        // create preview view
-        preview = new CameraPreview(this, camera);
-        FrameLayout prevLayout = (FrameLayout)findViewById(R.id.camera_preview);
-        prevLayout.addView(preview);
-    }
+        Button placesButton = (Button) findViewById(R.id.placeslist);
+        placesButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
+        final Intent placesIntent = new Intent(this, PlacesListActivity.class);
+        placesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(placesIntent);
+            }
+        });
 
-    public static Camera getCameraInstance(){
-        Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
-        }
-        System.out.println(c);
-        return c; // returns null if camera is unavailable
-    }
-
-
-
-    /** Check if the device has a camera */
-    private boolean cameraHardwarePresent(Context context) {
-        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            // camera is present
-            return true;
-        } else {
-            // no camera
-            return false;
-        }
     }
 }
