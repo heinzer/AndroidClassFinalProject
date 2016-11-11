@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 startGameButton.setText(getResources().getString(R.string.loading));
+                printLocations();
                 startActivity(startGameIntent);
             }
         });
