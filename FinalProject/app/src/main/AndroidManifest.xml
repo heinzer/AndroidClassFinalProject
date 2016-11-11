@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CameraActivity"/>
         <activity android:name=".PlacesListActivity"/>
         <activity android:name=".PlaceDetailsActivity"></activity>
     </application>
