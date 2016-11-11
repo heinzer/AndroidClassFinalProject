@@ -1,5 +1,6 @@
 package com.example.heinzer.finalproject;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,9 @@ import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -25,13 +29,29 @@ public class CameraActivity extends Activity {
 
     private Camera camera;
     private CameraPreview preview;
+    final static int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        pr = new PlacesRetriever();
-        pr.askPermission(this);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                String str = "Explanation needed: Please I need to access your camera";
+                Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_ACCESS_CAMERA);
+                String str = "No explanation needed: thanks.";
+                Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+            }
+        }
 
         // retrieve the camera
         camera = getCameraInstance();

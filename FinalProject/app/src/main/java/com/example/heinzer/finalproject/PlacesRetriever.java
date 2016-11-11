@@ -18,8 +18,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by hornl on 11/10/2016.
@@ -33,9 +35,67 @@ public class PlacesRetriever {
     private Location latLocation;
 
     private String locationsTypes = "restaurant";
-    List<HashMap<String, String>> nearbyPlacesList = null;
+    List<Place> nearbyPlacesList = null;
+    private List<Place> chosenPlaces = null;
+    private Place chosenPlace = null;
+
+    /**
+     * Returns the User's current Location
+     * @return user's location
+     */
+    public Location getLocation(){
+        return latLocation;
+    }
+
+    /**
+     * Returns the List of places within the specified radius!
+     * @return The list
+     */
+    public List<Place> getplaces(){
+        return nearbyPlacesList;
+    }
+
+    public void choosePlaces(){
+        Random rand = new Random();
+        chosenPlaces = new ArrayList<>();
+        ArrayList<Integer> nums = new ArrayList<Integer>();
+
+        if(nearbyPlacesList.size()>4) {
+            int randomNum = rand.nextInt(nearbyPlacesList.size()-1);
+            nums.add(randomNum);
+            chosenPlaces.add(nearbyPlacesList.get(randomNum));
+
+            for (int i = 0; i <= 2; i++) {
+                randomNum = rand.nextInt(nearbyPlacesList.size() - 1);
+                while (nums.contains(randomNum)) {
+                    randomNum = rand.nextInt(nearbyPlacesList.size() - 1);
+                }
+                nums.add(randomNum);
+                chosenPlaces.add(nearbyPlacesList.get(randomNum));
+            }
+        }else{
+            chosenPlaces = nearbyPlacesList;
+        }
+
+        int randomN = rand.nextInt(chosenPlaces.size()-1);
+        chosenPlace = chosenPlaces.get(randomN);
+
+    }
+
+    public List<Place> getPlacesForGame(){
+        return chosenPlaces;
+    }
+
+    public Place getChosenPlace(){
+        return chosenPlace;
+    }
 
 
+/***************************You should not have to deal with anything under this line. *******************
+    /**
+     * Asks permission for location usage
+     * @param a The activity using it
+     */
     public void askPermission(Activity a){
         if(ContextCompat.checkSelfPermission(a.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -69,7 +129,8 @@ public class PlacesRetriever {
         if (provider != null) {
             latLocation = locationManager.getLastKnownLocation(provider);
             String s = "My Location is: \nLat:" +latLocation.getLatitude() + "\nLong: " + latLocation.getLongitude();
-            Toast toast = Toast.makeText(a.getApplicationContext(), "Location based services not available", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(a.getApplicationContext(), s, Toast.LENGTH_SHORT);
+            toast.show();
 
             String url = getUrl(latLocation.getLatitude(), latLocation.getLongitude(), locationsTypes);
             Object[] DataTransfer = new Object[1];
@@ -92,28 +153,22 @@ public class PlacesRetriever {
     }
 
 
-    protected void setNearbyPlaces(List<HashMap<String, String>> npl){
-        System.out.println("Now setting locations to:" + npl);
+    /**
+     * Sets the places list. Called by the background thread. You should not call.
+     * @param npl list of places
+     */
+    protected void setNearbyPlaces(List<Place> npl){
         nearbyPlacesList = npl;
     }
 
 
     /**
-     * Returns the places! parse method:
-     * for (int i = 0; i < nearbyPlacesList.size(); i++) {
-         HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
-         double lat = Double.parseDouble(googlePlace.get("lat"));
-         double lng = Double.parseDouble(googlePlace.get("lng"));
-         String placeName = googlePlace.get("place_name");
-         String vicinity = googlePlace.get("vicinity");
-         LatLng latLng = new LatLng(lat, lng);
-     }
-     * @return
+     * Makes the convoluted url for the places request
+     * @param latitude    place to look near
+     * @param longitude   place to look near
+     * @param nearbyPlace Kind of places to look for
+     * @return the request url
      */
-    public List<HashMap<String, String>> getplaces(){
-        return nearbyPlacesList;
-    }
-
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
