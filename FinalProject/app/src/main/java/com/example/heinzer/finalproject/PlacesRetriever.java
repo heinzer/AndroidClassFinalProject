@@ -96,10 +96,13 @@ public class PlacesRetriever {
 
         int randomN = rand.nextInt(chosenPlaces.size()-1);
         chosenPlace = chosenPlaces.get(randomN);
+        chosenPlaces.remove(randomN);
+        System.out.println("Here is where it is set: " + chosenPlaces);
 
     }
 
     public List<Place> getPlacesForGame(){
+        System.out.println("Places are here: " + chosenPlaces);
         return chosenPlaces;
     }
 
@@ -156,12 +159,14 @@ public class PlacesRetriever {
             getNearbyPlacesData.setretriever(this);
             getNearbyPlacesData.execute(DataTransfer);
 
+            //updateWithNewLocation(l);
+            //add automated locaton updates later
+           // locationManager.requestLocationUpdates(provider, 2000, 10, locationListener);
         } else {
             Toast toast = Toast.makeText(a.getApplicationContext(), "Location based services not available", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
-
 
     /**
      * Sets the places list. Called by the background thread. You should not call.

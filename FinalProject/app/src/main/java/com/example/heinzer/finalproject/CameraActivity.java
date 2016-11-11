@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,10 +17,19 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by duchesneaur on 11/10/2016.
  */
 public class CameraActivity extends Activity {
+    PlacesRetriever pr;
 
     private Camera camera;
     private CameraPreview preview;
@@ -28,6 +38,36 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        // Retrieve the places from the bundle
+        Place chosenPlace = (Place)getIntent().getSerializableExtra("chosenPlace");
+        Place place1 = (Place)getIntent().getSerializableExtra("placeList0");
+        Place place2 = (Place)getIntent().getSerializableExtra("placeList1");
+        Place place3 = (Place)getIntent().getSerializableExtra("placeList2");
+
+        System.out.println("CHOSEN: " + chosenPlace);
+
+        List<Place> places = new ArrayList<Place>();
+        places.add(chosenPlace);
+        places.add(place1);
+        places.add(place2);
+        places.add(place3);
+
+        Collections.shuffle(places);
+
+        Button firstChoice = (Button) findViewById(R.id.firstLoc);
+        Button secondChoice = (Button) findViewById(R.id.secondLoc);
+        Button thirdChoice = (Button) findViewById(R.id.thirdLoc);
+        Button fourthChoice = (Button) findViewById(R.id.fourthLoc);
+
+        firstChoice.setText(places.get(0).getName());
+        secondChoice.setText(places.get(1).getName());
+        thirdChoice.setText(places.get(2).getName());
+        fourthChoice.setText(places.get(3).getName());
+
+        for(int i = 0; i < places.size(); i++){
+            System.out.println(places.get(i));
+        }
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
@@ -64,6 +104,8 @@ public class CameraActivity extends Activity {
                 startActivity(backIntent);
             }
         });
+
+
     }
 
     public static Camera getCameraInstance(){

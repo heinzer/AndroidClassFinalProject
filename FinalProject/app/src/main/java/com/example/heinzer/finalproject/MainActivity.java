@@ -8,9 +8,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -31,14 +34,50 @@ public class MainActivity extends Activity {
         pr = new PlacesRetriever();
         pr.askPermission(this);
 
+
+/*        Place place = new Place();
+        place.setLatitude(2.2);
+        place.setLongitude(2.3);
+        place.setName("Derp Place");
+        place.setAddress("123 Derp Lane");
+
+        this.getIntent().putExtra("winningStatus", "You Won!");
+        this.getIntent().putExtra("placeDetails", place);*/
+
+        //Check to see if any extras are sent back from the game
+        if(this.getIntent().getExtras() != null) {
+            Bundle bundle = this.getIntent().getExtras();
+
+            LinearLayout ll = (LinearLayout) findViewById(R.id.test);
+            ll.setGravity(Gravity.BOTTOM);
+
+            TextView winningStatus = (TextView) findViewById(R.id.winningStatus);
+            winningStatus.setText(bundle.getString("winningStatus"));
+
+            TextView placeDetails = (TextView) findViewById(R.id.placeDetails);
+            placeDetails.setText(((Place)this.getIntent().getSerializableExtra("placeDetails")).getFullDetails());
+
+            TextView gestureNote = (TextView) findViewById(R.id.gestureNote);
+            gestureNote.setText("Shake to add location to saved places");
+        }
+
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent startGameIntent = new Intent(this, CameraActivity.class);
+
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pr.choosePlaces();
                 startGameButton.setText(getResources().getString(R.string.loading));
-                printLocations();
+                startGameIntent.putExtra("chosenPlace", pr.getChosenPlace());
+                List<Place> places = pr.getPlacesForGame();
+                System.out.println("SIZE: " + places.size());
+                for(int i = 0; i < places.size(); i++){
+                    String name = "placeList" + i;
+                    System.out.println(name + " : " + places.get(i));
+                    startGameIntent.putExtra(name, places.get(i));
+                }
                 startActivity(startGameIntent);
             }
         });
@@ -46,6 +85,8 @@ public class MainActivity extends Activity {
         Button placesButton = (Button) findViewById(R.id.placeslist);
         placesButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent placesIntent = new Intent(this, PlacesListActivity.class);
+        Bundle data = new Bundle();
+
         placesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,7 +101,6 @@ public class MainActivity extends Activity {
 
             public void onShake() {
                 Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -68,6 +108,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Reset the text on the button to say 'start game'
+        final Button startGameButton = (Button) findViewById(R.id.startgame);
+        startGameButton.setText(getResources().getString(R.string.start));
+
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);
@@ -80,17 +125,16 @@ public class MainActivity extends Activity {
     }
 
 
-    private void printLocations(){
-        List<Place> nearbyPlacesList =  pr.getplaces();
-        for (int i = 0; i < nearbyPlacesList.size(); i++) {
-            Place googlePlace = nearbyPlacesList.get(i);
-            double lat = googlePlace.getLatitude();
-            double lng = googlePlace.getLongitude();
-            String placeName = googlePlace.getName();
-            String vicinity = googlePlace.getVicinity();
-            LatLng latLng = new LatLng(lat, lng);
-            System.out.println("placeName: " + placeName);
-        }
-    }
-
+//    private void printLocations(){
+//        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();
+//        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+//            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+//            double lat = Double.parseDouble(googlePlace.get("lat"));
+//            double lng = Double.parseDouble(googlePlace.get("lng"));
+//            String placeName = googlePlace.get("place_name");
+//            String vicinity = googlePlace.get("vicinity");
+//            LatLng latLng = new LatLng(lat, lng);
+//            System.out.println("placeName: " + placeName);
+//        }
+//    }
 }

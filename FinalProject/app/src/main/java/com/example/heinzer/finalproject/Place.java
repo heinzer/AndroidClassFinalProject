@@ -60,6 +60,10 @@ public class Place implements Serializable {
 
     public String getVicinity(){return vicinity;}
 
+    public String getFullDetails(){
+        return name + "\n" + address + "\nLatitude: " + latitude + "\nLongitude" + longitude;
+    }
+
     public void setPhotoReference(String photoReference){
         this.photoReference = photoReference;
     }
