@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by duchesneaur on 11/10/2016.
@@ -36,8 +39,35 @@ public class CameraActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        Place chosenPlace = (Place)getIntent().getSerializableExtra("placeChosen");
-        System.out.println(chosenPlace);
+        // Retrieve the places from the bundle
+        Place chosenPlace = (Place)getIntent().getSerializableExtra("chosenPlace");
+        Place place1 = (Place)getIntent().getSerializableExtra("placeList0");
+        Place place2 = (Place)getIntent().getSerializableExtra("placeList1");
+        Place place3 = (Place)getIntent().getSerializableExtra("placeList2");
+
+        System.out.println("CHOSEN: " + chosenPlace);
+
+        List<Place> places = new ArrayList<Place>();
+        places.add(chosenPlace);
+        places.add(place1);
+        places.add(place2);
+        places.add(place3);
+
+        Collections.shuffle(places);
+
+        Button firstChoice = (Button) findViewById(R.id.firstLoc);
+        Button secondChoice = (Button) findViewById(R.id.secondLoc);
+        Button thirdChoice = (Button) findViewById(R.id.thirdLoc);
+        Button fourthChoice = (Button) findViewById(R.id.fourthLoc);
+
+        firstChoice.setText(places.get(0).getName());
+        secondChoice.setText(places.get(1).getName());
+        thirdChoice.setText(places.get(2).getName());
+        fourthChoice.setText(places.get(3).getName());
+
+        for(int i = 0; i < places.size(); i++){
+            System.out.println(places.get(i));
+        }
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
@@ -102,17 +132,4 @@ public class CameraActivity extends Activity {
             return false;
         }
     }
-
-//    private void printLocations(){
-//        List<Place> nearbyPlacesList =  pr.getplaces();
-//        for (int i = 0; i < nearbyPlacesList.size(); i++) {
-//            Place googlePlace = nearbyPlacesList.get(i);
-//            double lat = googlePlace.getLatitude();
-//            double lng = googlePlace.getLongitude();
-//            String placeName = googlePlace.getName();
-//            String vicinity = googlePlace.getVicinity();
-//            LatLng latLng = new LatLng(lat, lng);
-//            System.out.println("placeName: " + placeName);
-//        }
-//    }
 }

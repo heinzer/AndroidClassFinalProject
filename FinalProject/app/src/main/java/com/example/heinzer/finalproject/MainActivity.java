@@ -42,9 +42,11 @@ public class MainActivity extends Activity {
                 startGameButton.setText(getResources().getString(R.string.loading));
                 startGameIntent.putExtra("chosenPlace", pr.getChosenPlace());
                 List<Place> places = pr.getPlacesForGame();
-                for(int i = 0; i< places.size(); i++){
-                    String name = "placeList";
-                    startGameIntent.putExtra((name + i), places.get(i));
+                System.out.println("SIZE: " + places.size());
+                for(int i = 0; i < places.size(); i++){
+                    String name = "placeList" + i;
+                    System.out.println(name + " : " + places.get(i));
+                    startGameIntent.putExtra(name, places.get(i));
                 }
                 startActivity(startGameIntent);
             }
