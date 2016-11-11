@@ -69,9 +69,11 @@ public class PlaceDataParser {
             }
             latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
             longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            String photo_Reference = googlePlaceJson.getJSONArray("photos").getJSONObject(0).getString("photo_reference");
             reference = googlePlaceJson.getString("reference");
             googlePlaceMap.setName(placeName);
             googlePlaceMap.setVicinity(vicinity);
+            googlePlaceMap.setPhotoReference(photo_Reference);
             googlePlaceMap.setLatitude(Double.parseDouble(latitude));
             googlePlaceMap.setLongitude(Double.parseDouble(longitude));
             Log.d("getPlace", "Putting Places");

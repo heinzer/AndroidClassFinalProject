@@ -60,6 +60,13 @@ public class Place implements Serializable {
 
     public String getVicinity(){return vicinity;}
 
+    public void setPhotoReference(String photoReference){
+        this.photoReference = photoReference;
+    }
+
+    public String getPhotoReference(){
+        return photoReference;
+    }
 
     @Override
     public String toString(){

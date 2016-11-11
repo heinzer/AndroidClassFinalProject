@@ -40,6 +40,8 @@ public class PlacesRetriever {
     private Place chosenPlace = null;
     private boolean isReady = false;
 
+    private String[] placeholders= {"Kitty", "Tree", "TacoBell", "Taylor"};
+
     /**
      * Returns the User's current Location
      * @return user's location
@@ -80,6 +82,16 @@ public class PlacesRetriever {
             }
         }else{
             chosenPlaces = nearbyPlacesList;
+            if(chosenPlaces.size() < 4){
+                for(int i = 0; chosenPlaces.size()<4; i++){
+                    Place p = new Place();
+                    p.setName(placeholders[i]);
+                    p.setLongitude(0);
+                    p.setLatitude(0);
+                    chosenPlaces.add(p);
+
+                }
+            }
         }
 
         int randomN = rand.nextInt(chosenPlaces.size()-1);

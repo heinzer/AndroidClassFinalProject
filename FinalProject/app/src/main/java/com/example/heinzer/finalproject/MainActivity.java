@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
 
             public void onShake() {
                 Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -91,4 +92,5 @@ public class MainActivity extends Activity {
             System.out.println("placeName: " + placeName);
         }
     }
+
 }
