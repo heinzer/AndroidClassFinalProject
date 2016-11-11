@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -34,6 +35,9 @@ public class CameraActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+        Place chosenPlace = (Place)getIntent().getSerializableExtra("placeChosen");
+        System.out.println(chosenPlace);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA)
@@ -99,16 +103,16 @@ public class CameraActivity extends Activity {
         }
     }
 
-    private void printLocations(){
-        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();
-        for (int i = 0; i < nearbyPlacesList.size(); i++) {
-            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
-            String placeName = googlePlace.get("place_name");
-            String vicinity = googlePlace.get("vicinity");
-            LatLng latLng = new LatLng(lat, lng);
-            System.out.println("placeName: " + placeName);
-        }
-    }
+//    private void printLocations(){
+//        List<Place> nearbyPlacesList =  pr.getplaces();
+//        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+//            Place googlePlace = nearbyPlacesList.get(i);
+//            double lat = googlePlace.getLatitude();
+//            double lng = googlePlace.getLongitude();
+//            String placeName = googlePlace.getName();
+//            String vicinity = googlePlace.getVicinity();
+//            LatLng latLng = new LatLng(lat, lng);
+//            System.out.println("placeName: " + placeName);
+//        }
+//    }
 }

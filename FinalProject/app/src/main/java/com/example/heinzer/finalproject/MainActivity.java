@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity {
-//    PlacesRetriever pr;
+    PlacesRetriever pr;
     private SensorManager mSensorManager;
 
     private ShakeEventListener mSensorListener;
@@ -28,17 +28,24 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        pr = new PlacesRetriever();
-//        pr.askPermission(this);
+        pr = new PlacesRetriever();
+        pr.askPermission(this);
 
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent startGameIntent = new Intent(this, CameraActivity.class);
+
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                pr.choosePlaces();
                 startGameButton.setText(getResources().getString(R.string.loading));
-//                printLocations();
+                startGameIntent.putExtra("chosenPlace", pr.getChosenPlace());
+                List<Place> places = pr.getPlacesForGame();
+                for(int i = 0; i< places.size(); i++){
+                    String name = "placeList";
+                    startGameIntent.putExtra((name + i), places.get(i));
+                }
                 startActivity(startGameIntent);
             }
         });
