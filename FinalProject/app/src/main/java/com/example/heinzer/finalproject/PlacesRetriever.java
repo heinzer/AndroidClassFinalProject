@@ -35,7 +35,7 @@ public class PlacesRetriever {
     private Criteria criteria;
 
     private int PROXIMITY_RADIUS = 10000;
-    private Location latLocation;
+    private static Location latLocation;
 
     private String locationsTypes = "restaurant";
     List<Place> nearbyPlacesList = null;
@@ -49,7 +49,7 @@ public class PlacesRetriever {
      * Returns the User's current Location
      * @return user's location
      */
-    public Location getLocation(){
+    public static Location getLocation(){
         return latLocation;
     }
 
@@ -201,6 +201,7 @@ public class PlacesRetriever {
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
+        // googlePlacesUrl.append("&type=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + "AIzaSyAYXpuEkh14deoc_ELfoHmQiCGUROT1py4");
         Log.d("getUrl", googlePlacesUrl.toString());

@@ -8,6 +8,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
+import android.hardware.GeomagneticField;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -33,12 +39,17 @@ import java.util.Random;
 /**
  * Created by duchesneaur on 11/10/2016.
  */
-public class CameraActivity extends Activity {
+public class CameraActivity extends Activity implements SensorEventListener{
     PlacesRetriever pr;
+    SensorManager sManager;
 
     private Camera camera;
     private CameraPreview preview;
     final static int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
+    TextView overlay;
+    Location myLocation;
+    Location destination;
+
 
     private Place chosenPlace;
     @Override
@@ -108,6 +119,12 @@ public class CameraActivity extends Activity {
         preview = new CameraPreview(this, camera);
         FrameLayout prevLayout = (FrameLayout)findViewById(R.id.camera_preview);
         prevLayout.addView(preview);
+        OverlayView overlayView = new OverlayView(getApplicationContext());
+        prevLayout.addView(overlayView);
+
+        sManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        Sensor gyroSensor = sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        sManager.registerListener(this, gyroSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         Button backButton = (Button) findViewById(R.id.camera_back);
         final Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -119,7 +136,19 @@ public class CameraActivity extends Activity {
             }
         });
 
+        overlay = (TextView)findViewById(R.id.degrees);
 
+        myLocation = PlacesRetriever.getLocation();
+        destination = new Location("");
+        destination.setLatitude(chosenPlace.getLatitude());
+        destination.setLongitude(chosenPlace.getLongitude());
+        System.out.println(myLocation.bearingTo(destination));
+
+    }
+
+    public void onStop(){
+        super.onStop();
+        sManager.unregisterListener(this,sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION));
     }
 
     public static Camera getCameraInstance(){
@@ -134,8 +163,6 @@ public class CameraActivity extends Activity {
         return c; // returns null if camera is unavailable
     }
 
-
-
     /** Check if the device has a camera */
     private boolean cameraHardwarePresent(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
@@ -145,6 +172,40 @@ public class CameraActivity extends Activity {
             // no camera
             return false;
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+
+
+        // get the angle around the z-axis rotated
+        float heading = event.values[0];
+
+        GeomagneticField geoField = new GeomagneticField(
+                (float) myLocation.getLatitude(),
+                (float) myLocation.getLongitude(),
+                (float) myLocation.getAltitude(),
+                System.currentTimeMillis());
+
+        heading += geoField.getDeclination(); // converts magnetic north into true north
+        float bearing = myLocation.bearingTo(destination); // (it's already in degrees)
+        float direction = (bearing - heading) * -1;
+        float distance = myLocation.distanceTo(destination);
+
+        direction = direction % 360;
+
+        overlay.setText(""+direction + "\n" + distance);
+//        System.out.println("----------");
+//        System.out.println("BEARING: " + bearing);
+//        System.out.println("HEADING: " + heading);
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        System.out.println("BEARING CHANGED");
+
     }
 
     private class buttonListener implements View.OnClickListener{

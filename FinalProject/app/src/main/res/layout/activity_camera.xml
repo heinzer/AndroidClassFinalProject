@@ -33,6 +33,16 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/degrees"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:text="This is random information for you to see"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"/>
+
+
     <LinearLayout
         android:id="@+id/mLlayoutBottomButtons"
         android:layout_width="fill_parent"
