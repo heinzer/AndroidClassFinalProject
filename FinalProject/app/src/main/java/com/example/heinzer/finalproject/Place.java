@@ -1,6 +1,16 @@
 package com.example.heinzer.finalproject;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by heinzer on 11/4/2016.
@@ -15,6 +25,7 @@ public class Place implements Serializable {
     private String address;
     private String vicinity;
     private String photoReference;
+    private String placeId;
 
     public String getAddress(){
         return address;
@@ -61,7 +72,7 @@ public class Place implements Serializable {
     public String getVicinity(){return vicinity;}
 
     public String getFullDetails(){
-        return name + "\n" + address + "\nLatitude: " + latitude + "\nLongitude" + longitude;
+        return name + "\n\n" + address;
     }
 
     public void setPhotoReference(String photoReference){
@@ -72,8 +83,16 @@ public class Place implements Serializable {
         return photoReference;
     }
 
+    public void setPlaceId(String placeId){
+        this.placeId = placeId;
+    }
+    public String getPlaceId(){
+        return placeId;
+    }
+
     @Override
     public String toString(){
         return this.name;
     }
+
 }

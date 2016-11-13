@@ -1,5 +1,7 @@
 package com.example.heinzer.finalproject;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 
 import android.app.Activity;
@@ -14,13 +16,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.location.places.Places;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Random;
  */
 public class PlacesRetriever {
     final static int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
+    private Activity a;
     private LocationManager locationManager;
     private Criteria criteria;
 
@@ -96,6 +99,7 @@ public class PlacesRetriever {
 
         int randomN = rand.nextInt(chosenPlaces.size()-1);
         chosenPlace = chosenPlaces.get(randomN);
+        setPlaceAddress(chosenPlace);
         chosenPlaces.remove(randomN);
         System.out.println("Here is where it is set: " + chosenPlaces);
 
@@ -117,6 +121,7 @@ public class PlacesRetriever {
      * @param a The activity using it
      */
     public void askPermission(Activity a){
+        this.a = a;
         if(ContextCompat.checkSelfPermission(a.getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -202,4 +207,34 @@ public class PlacesRetriever {
         Log.d("getUrl", googlePlacesUrl.toString());
         return (googlePlacesUrl.toString());
     }
+
+    private void setPlaceAddress(Place p){
+        String addressString = "";
+
+        if(Geocoder.isPresent()) {
+            Geocoder g = new Geocoder(a.getApplicationContext(), Locale.US);
+
+            try {
+                List<Address> a = g.getFromLocation(p.getLatitude(), p.getLongitude(), 1);
+
+                if (a != null && a.size() > 0) {
+                    String address = a.get(0).getAddressLine(0);
+                    String address2 = a.get(0).getAddressLine(1);
+                    String postalCode = a.get(0).getPostalCode();
+                    String country = a.get(0).getCountryName();
+                    addressString = address + " \n" + address2 + " \n" + postalCode + " \n" +country;
+
+                }
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }else{
+            Toast toast = Toast.makeText(a.getApplicationContext(), "Geocoder is Unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        p.setAddress(addressString);
+    }
+
 }

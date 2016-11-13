@@ -37,7 +37,6 @@ public class DownloadUrl {
             }
 
             data = sb.toString();
-            System.out.println("downloadUrl"+ data.toString());
             br.close();
 
         } catch (Exception e) {

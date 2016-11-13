@@ -21,26 +21,21 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     @Override
     protected String doInBackground(Object... params) {
         try {
-            System.out.println("GetNearbyPlacesData"+ "doInBackground entered");
             url = (String) params[0];
             DownloadUrl downloadUrl = new DownloadUrl();
             googlePlacesData = downloadUrl.readUrl(url);
-            System.out.println("GooglePlacesReadTask"+ "doInBackground Exit");
         } catch (Exception e) {
-            System.out.println("GooglePlacesReadTask"+ e.toString());
+            System.out.println("GooglePlacesReadTask: "+ e.toString());
         }
         return googlePlacesData;
     }
 
     @Override
     protected void onPostExecute(String result) {
-        System.out.println("GooglePlacesReadTask"+ "onPostExecute Entered");
-        System.out.println("Result: " + result);
         List<Place> nearbyPlacesList = null;
         PlaceDataParser dataParser = new PlaceDataParser();
         nearbyPlacesList =  dataParser.parse(result);
         pr.setNearbyPlaces(nearbyPlacesList);
-        System.out.println("GooglePlacesReadTask"+ "onPostExecute Exit");
     }
 
 

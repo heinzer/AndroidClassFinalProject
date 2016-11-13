@@ -1,49 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.heinzer.finalproject.MainActivity">
-    <TextView
-        android:id="@+id/winningStatus"
+    android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="40sp"/>
-    <TextView
-        android:id="@+id/placeDetails"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="25sp"/>
-    <LinearLayout
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
-        <Button
-            android:id="@+id/startgame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start Game"/>
-
-        <Button
-            android:id="@+id/placeslist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Saved Locations"/>
-
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.example.heinzer.finalproject.MainActivity">
         <TextView
-            android:id="@+id/gestureNote"
+            android:id="@+id/winningStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textSize="25sp"/>
+        <LinearLayout
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <Button
+                android:id="@+id/startgame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Game"/>
+
+            <Button
+                android:id="@+id/placeslist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saved Locations"/>
+
+            <ImageView
+                android:paddingTop="10dp"
+                android:id = "@+id/img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:paddingTop="10dp"
+                android:id="@+id/placeDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15sp"/>
+            <TextView
+                android:paddingTop="10dp"
+                android:id="@+id/gestureNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
