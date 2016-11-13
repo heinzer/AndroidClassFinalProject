@@ -34,7 +34,7 @@ public class PlacesRetriever {
     private LocationManager locationManager;
     private Criteria criteria;
 
-    private int PROXIMITY_RADIUS = 10000;
+    private int PROXIMITY_RADIUS = 5000;
     private static Location latLocation;
 
     private String locationsTypes = "restaurant";
@@ -153,9 +153,6 @@ public class PlacesRetriever {
         String  provider   =  locationManager.getBestProvider(criteria,  true);
         if (provider != null) {
             latLocation = locationManager.getLastKnownLocation(provider);
-            String s = "My Location is: \nLat:" +latLocation.getLatitude() + "\nLong: " + latLocation.getLongitude();
-            Toast toast = Toast.makeText(a.getApplicationContext(), s, Toast.LENGTH_SHORT);
-            toast.show();
 
             String url = getUrl(latLocation.getLatitude(), latLocation.getLongitude(), locationsTypes);
             Object[] DataTransfer = new Object[1];
