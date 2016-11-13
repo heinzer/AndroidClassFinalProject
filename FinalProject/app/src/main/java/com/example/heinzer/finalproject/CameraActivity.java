@@ -6,21 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.hardware.Camera;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -195,14 +192,36 @@ public class CameraActivity extends Activity implements SensorEventListener{
 
         direction = direction % 360;
 
-        if(direction < 0){
-            direction *= -1;
-        }
+        int distanceInt = (int)distance;
 
         System.out.println(direction);
-        if(direction < 20) {
-            overlay.setBackgroundColor(Color.WHITE);
-            overlay.setText("The location is this direction, about " + distance + " meters away.");
+        overlay.setBackgroundColor(Color.WHITE);
+
+        ViewGroup.LayoutParams params = overlay.getLayoutParams();
+
+        if(direction > 20 && direction < 180){
+            params.width = getResources().getDimensionPixelSize(R.dimen.textbox_small_width);
+            params.height = getResources().getDimensionPixelSize(R.dimen.textbox_small_height);
+
+            overlay.setLayoutParams(params);
+
+            overlay.setText("<");
+        }
+        else if(direction < 0 || direction > 180){
+            params.width = getResources().getDimensionPixelSize(R.dimen.textbox_small_width);
+            params.height = getResources().getDimensionPixelSize(R.dimen.textbox_small_height);
+
+            overlay.setLayoutParams(params);
+
+            overlay.setText(">");
+        }
+        else if(direction < 20 && direction > 0) {
+            params.width = getResources().getDimensionPixelSize(R.dimen.textbox_large_width);
+            params.height = getResources().getDimensionPixelSize(R.dimen.textbox_large_height);
+
+            overlay.setLayoutParams(params);
+
+            overlay.setText("The location is this direction, about " + distanceInt + " meters away.");
         }
         else{
             overlay.setBackgroundColor(Color.TRANSPARENT);

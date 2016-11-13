@@ -29,7 +29,8 @@
             android:text="@string/instructions"
             android:gravity="end"
             android:textSize="20sp"
-            android:background="#ffffff"
+            android:textColor="#000000"
+            android:background="#989898"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
