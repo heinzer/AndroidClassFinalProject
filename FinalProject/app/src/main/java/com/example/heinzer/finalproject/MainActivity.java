@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.heinzer.finalproject.R;
 
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        pr = new PlacesRetriever();
+        pr.askPermission(this);
+        setContentView(R.layout.activity_main);
+
 /*        Place place = new Place();
         place.setLatitude(2.2);
         place.setLongitude(2.3);
@@ -41,7 +46,6 @@ public class MainActivity extends Activity {
         this.getIntent().putExtra("winningStatus", "You Won!");
         this.getIntent().putExtra("placeDetails", place);*/
 
-        final Button startGameButton = (Button) findViewById(R.id.startgame);
         //Check to see if any extras are sent back from the game
         if(this.getIntent().getExtras() != null) {
             Bundle bundle = this.getIntent().getExtras();
@@ -66,12 +70,15 @@ public class MainActivity extends Activity {
                 getImage(currentPlace.getPhotoReference());
             }
 
+            final Button startGameButton = (Button) findViewById(R.id.startgame);
 
             startGameButton.setText("Start New Game");
             TextView gestureNote = (TextView) findViewById(R.id.gestureNote);
             gestureNote.setText("Shake to add location to saved places");
         }
 
+
+        final Button startGameButton = (Button) findViewById(R.id.startgame);
 
         startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent startGameIntent = new Intent(this, CameraActivity.class);

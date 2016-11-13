@@ -35,14 +35,14 @@ public class OverlayView extends View implements SensorEventListener{
 //        contentPaint.setTextAlign(Paint.Align.CENTER);
 //        contentPaint.setTextSize(50);
 //        contentPaint.setColor(Color.RED);
-//        canvas.drawTe
-            public static void updateText(String text){
-                System.out.println(text);
-            }xt(accelData, canvas.getWidth()/2, canvas.getHeight()/4, contentPaint);
+//        canvas.drawText(accelData, canvas.getWidth()/2, canvas.getHeight()/4, contentPaint);
 //        canvas.drawText(compassData, canvas.getWidth()/2, canvas.getHeight()/2, contentPaint);
 //        canvas.drawText(gyroData, canvas.getWidth()/2, (canvas.getHeight()*3)/4, contentPaint);
     }
 
+    public static void updateText(String text){
+        System.out.println(text);
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {

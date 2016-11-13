@@ -34,7 +34,7 @@ public class PlacesRetriever {
     private LocationManager locationManager;
     private Criteria criteria;
 
-    private int PROXIMITY_RADIUS = 50000;
+    private int PROXIMITY_RADIUS = 5000;
     private static Location latLocation;
 
     private String locationsTypes = "restaurant";
@@ -201,7 +201,7 @@ public class PlacesRetriever {
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-        googlePlacesUrl.append("&type=" + nearbyPlace);
+        // googlePlacesUrl.append("&type=" + nearbyPlace);
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + "AIzaSyAYXpuEkh14deoc_ELfoHmQiCGUROT1py4");
         Log.d("getUrl", googlePlacesUrl.toString());
