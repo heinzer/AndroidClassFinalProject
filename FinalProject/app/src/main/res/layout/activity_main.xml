@@ -40,6 +40,7 @@
                 android:text="Saved Locations"/>
 
             <ImageView
+                android:layout_gravity="center"
                 android:paddingTop="10dp"
                 android:id = "@+id/img"
                 android:layout_width="wrap_content"

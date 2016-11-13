@@ -55,5 +55,6 @@ public class PlacesListActivity extends ListActivity {
         placeList = dataSource.getAllPlaces();
         ArrayAdapter<Place> adapter = new ArrayAdapter<Place>(this, android.R.layout.simple_list_item_1, placeList);
         setListAdapter(adapter);
+        dataSource.close();
     }
 }
