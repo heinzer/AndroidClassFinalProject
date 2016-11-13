@@ -157,11 +157,14 @@ public class MainActivity extends Activity {
         // Reset the text on the button to say 'start game'
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.setText(getResources().getString(R.string.start));
-        checkforReady();
+        if(isNetworkAvailable()) {
+            pr.askPermission(this);
+            checkforReady();
 
-        mSensorManager.registerListener(mSensorListener,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(mSensorListener,
+                    mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_UI);
+        }
     }
 
     @Override
