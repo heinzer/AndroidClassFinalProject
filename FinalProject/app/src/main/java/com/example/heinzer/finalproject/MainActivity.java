@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,10 @@ public class MainActivity extends Activity {
 
     private boolean isPlaceAdded;
 
+    private Handler h = new Handler();
+    private int delay = 3000;
+    Runnable runnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +46,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         isPlaceAdded = false;
 
-        pr = new PlacesRetriever();
-        pr.askPermission(this);
-        setContentView(R.layout.activity_main);
 
 /*        Place place = new Place();
         place.setLatitude(2.2);
@@ -136,6 +138,24 @@ public class MainActivity extends Activity {
                 dataSource.close();
             }
         });
+
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runnable = this;
+                System.out.println("The runnable is going. Checking the pr status");
+
+                if(!pr.isDataReady()){
+                    startGameButton.setClickable(false);
+                    System.out.println("It is not ready");
+                    h.removeCallbacks(runnable);
+                }else{
+                    startGameButton.setClickable(true);
+                    System.out.println("It is ready!!!!");
+
+                }
+            }
+        }, delay);
     }
 
     @Override
@@ -154,6 +174,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(mSensorListener);
+        try {
+            h.removeCallbacks(runnable);
+        }catch(Exception e){
+            //Do nothing?
+        }
         super.onPause();
     }
 
@@ -175,6 +200,8 @@ public class MainActivity extends Activity {
 
         }.execute(url);
     }
+
+
 
 //    private void printLocations(){
 //        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();

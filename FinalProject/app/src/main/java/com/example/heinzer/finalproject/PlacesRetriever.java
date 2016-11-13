@@ -70,6 +70,10 @@ public class PlacesRetriever {
         chosenPlaces = new ArrayList<>();
         ArrayList<Integer> nums = new ArrayList<Integer>();
 
+        if(!isDataReady()){
+            System.out.println("The data is not ready yet");
+        }
+
         if(nearbyPlacesList.size()>4) {
             int randomNum = rand.nextInt(nearbyPlacesList.size()-1);
             nums.add(randomNum);
