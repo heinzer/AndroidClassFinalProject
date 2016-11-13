@@ -29,6 +29,8 @@
             android:text="@string/instructions"
             android:gravity="end"
             android:textSize="20sp"
+            android:background="#ffffff"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -36,10 +38,9 @@
     <TextView
         android:id="@+id/degrees"
         android:textSize="20sp"
-        android:textColor="#ffffff"
-        android:text="This is random information for you to see"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
         android:gravity="center"/>
 
 

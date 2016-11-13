@@ -195,7 +195,19 @@ public class CameraActivity extends Activity implements SensorEventListener{
 
         direction = direction % 360;
 
-        overlay.setText(""+direction + "\n" + distance);
+        if(direction < 0){
+            direction *= -1;
+        }
+
+        System.out.println(direction);
+        if(direction < 20) {
+            overlay.setBackgroundColor(Color.WHITE);
+            overlay.setText("The location is this direction, about " + distance + " meters away.");
+        }
+        else{
+            overlay.setBackgroundColor(Color.TRANSPARENT);
+            overlay.setText("");
+        }
 //        System.out.println("----------");
 //        System.out.println("BEARING: " + bearing);
 //        System.out.println("HEADING: " + heading);
