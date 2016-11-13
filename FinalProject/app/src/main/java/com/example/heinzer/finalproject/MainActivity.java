@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -41,9 +43,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        if(!isNetworkAvailable()){
+            Toast.makeText(MainActivity.this, "An internet connection is required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         pr = new PlacesRetriever();
         pr.askPermission(this);
-        setContentView(R.layout.activity_main);
         isPlaceAdded = false;
 
 
@@ -139,23 +147,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                runnable = this;
-                System.out.println("The runnable is going. Checking the pr status");
-
-                if(!pr.isDataReady()){
-                    startGameButton.setClickable(false);
-                    System.out.println("It is not ready");
-                    h.removeCallbacks(runnable);
-                }else{
-                    startGameButton.setClickable(true);
-                    System.out.println("It is ready!!!!");
-
-                }
-            }
-        }, delay);
+        checkforReady();
     }
 
     @Override
@@ -165,6 +157,7 @@ public class MainActivity extends Activity {
         // Reset the text on the button to say 'start game'
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.setText(getResources().getString(R.string.start));
+        checkforReady();
 
         mSensorManager.registerListener(mSensorListener,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -199,6 +192,35 @@ public class MainActivity extends Activity {
             }
 
         }.execute(url);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void checkforReady(){
+        final Button startGameButton = (Button) findViewById(R.id.startgame);
+
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                runnable = this;
+                System.out.println("The runnable is going. Checking the pr status");
+
+                if(!pr.isDataReady()){
+                    startGameButton.setClickable(false);
+                    System.out.println("It is not ready");
+                    h.removeCallbacks(runnable);
+                }else{
+                    startGameButton.setClickable(true);
+                    System.out.println("It is ready!!!!");
+
+                }
+            }
+        }, delay);
     }
 
 
