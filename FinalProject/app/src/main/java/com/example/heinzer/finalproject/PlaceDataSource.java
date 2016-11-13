@@ -56,6 +56,24 @@ public class PlaceDataSource {
         return newPlace;
     }
 
+    public boolean addPlaceToDatabase(Place place){
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_NAME, place.getName());
+        values.put(MySQLiteHelper.COLUMN_ADDRESS, place.getAddress());
+        values.put(MySQLiteHelper.COLUMN_LATITUDE, place.getLatitude());
+        values.put(MySQLiteHelper.COLUMN_LONGITUDE, place.getLongitude());
+        values.put(MySQLiteHelper.COLUMN_PHOTOREF, place.getPhotoReference());
+        values.put(MySQLiteHelper.COLUMN_PLACEID, place.getPlaceId());
+
+        long insertId = database.insert(MySQLiteHelper.TABLE_PLACES, null, values);
+       if(insertId>=0){
+           return true;
+       }else{
+           return false;
+       }
+
+    }
+
     public void deletePlace(Place place) {
         long id = place.getId();
         System.out.println("Place deleted with id: " + id);

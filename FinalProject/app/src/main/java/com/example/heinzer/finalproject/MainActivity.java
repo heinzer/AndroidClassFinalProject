@@ -28,9 +28,17 @@ public class MainActivity extends Activity {
 
     private Place currentPlace;
 
+    private PlaceDataSource dataSource;
+
+    private boolean isPlaceAdded;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pr = new PlacesRetriever();
+        pr.askPermission(this);
+        setContentView(R.layout.activity_main);
+        isPlaceAdded = false;
 
 /*        Place place = new Place();
         place.setLatitude(2.2);
@@ -40,6 +48,7 @@ public class MainActivity extends Activity {
 
         this.getIntent().putExtra("winningStatus", "You Won!");
         this.getIntent().putExtra("placeDetails", place);*/
+        dataSource = new PlaceDataSource(this);
 
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         //Check to see if any extras are sent back from the game
@@ -68,6 +77,7 @@ public class MainActivity extends Activity {
 
 
             startGameButton.setText("Start New Game");
+
             TextView gestureNote = (TextView) findViewById(R.id.gestureNote);
             gestureNote.setText("Shake to add location to saved places");
         }
@@ -110,7 +120,13 @@ public class MainActivity extends Activity {
         mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
 
             public void onShake() {
-                Toast.makeText(MainActivity.this, "Shake!", Toast.LENGTH_SHORT).show();
+                dataSource.open();
+                if(currentPlace != null && !isPlaceAdded) {
+                    dataSource.addPlaceToDatabase(currentPlace);
+                    isPlaceAdded = true;
+                    Toast.makeText(MainActivity.this, "Place Added", Toast.LENGTH_SHORT).show();
+                }
+                dataSource.close();
             }
         });
     }
@@ -136,7 +152,6 @@ public class MainActivity extends Activity {
 
     private void getImage(String placeId){
         String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+placeId+"&key=AIzaSyAYXpuEkh14deoc_ELfoHmQiCGUROT1py4";
-        System.out.println("Finding Image: " + url);
         final ImageView img = (ImageView) findViewById(R.id.img);
         new GetImage(this){
             @Override

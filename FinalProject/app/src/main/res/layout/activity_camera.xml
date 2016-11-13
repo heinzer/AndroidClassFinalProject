@@ -14,13 +14,24 @@
         android:layout_height="fill_parent"
         />
 
-    <Button
-        android:id="@+id/camera_back"
-        android:text="@string/back_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/camera_back"
+            android:text="@string/back_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
+        <TextView
+            android:text="@string/instructions"
+            android:gravity="end"
+            android:textSize="15sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mLlayoutBottomButtons"
