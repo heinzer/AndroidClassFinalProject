@@ -5,10 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -21,10 +22,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -37,13 +40,15 @@ public class CameraActivity extends Activity {
     private Camera camera;
     private CameraPreview preview;
     final static int MY_PERMISSIONS_REQUEST_ACCESS_CAMERA = 1;
+
+    private Place chosenPlace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
         // Retrieve the places from the bundle
-        Place chosenPlace = (Place)getIntent().getSerializableExtra("chosenPlace");
+        chosenPlace = (Place)getIntent().getSerializableExtra("chosenPlace");
         Place place1 = (Place)getIntent().getSerializableExtra("placeList0");
         Place place2 = (Place)getIntent().getSerializableExtra("placeList1");
         Place place3 = (Place)getIntent().getSerializableExtra("placeList2");
@@ -67,6 +72,13 @@ public class CameraActivity extends Activity {
         secondChoice.setText(places.get(1).getName());
         thirdChoice.setText(places.get(2).getName());
         fourthChoice.setText(places.get(3).getName());
+
+        firstChoice.setOnClickListener(new buttonListener());
+        secondChoice.setOnClickListener(new buttonListener());
+        thirdChoice.setOnClickListener(new buttonListener());
+        fourthChoice.setOnClickListener(new buttonListener());
+
+
 
         for(int i = 0; i < places.size(); i++){
             System.out.println(places.get(i));
@@ -146,4 +158,33 @@ public class CameraActivity extends Activity {
             return false;
         }
     }
+
+    private class buttonListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            final Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
+            backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+            Button clicked  = (Button)v;
+            String chosen = (String)clicked.getText();
+            System.out.println("Chose:" + chosen);
+            System.out.println("Correct: " + chosenPlace.getName());
+
+            if(chosen.equals(chosenPlace.getName())){
+                clicked.setBackgroundColor(Color.GREEN);
+                backIntent.putExtra("winningMessage", "Congrats You Won!\nThe place was indeed " + chosenPlace.getName());
+                backIntent.putExtra("won", true);
+            }
+            else{
+                clicked.setBackgroundColor(Color.RED);
+                backIntent.putExtra("winningMessage", "Oh No! You lost! \n The correct place was " + chosenPlace.getName());
+                backIntent.putExtra("won", false);
+            }
+            backIntent.putExtra("place", chosenPlace);
+
+            startActivity(backIntent);
+        }
+    }
+
 }

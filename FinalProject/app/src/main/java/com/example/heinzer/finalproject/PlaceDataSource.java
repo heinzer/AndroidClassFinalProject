@@ -21,7 +21,8 @@ public class PlaceDataSource {
     private MySQLiteHelper dbHelper;
     private String[] allColumns = {
             MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_NAME, MySQLiteHelper.COLUMN_ADDRESS,
-            MySQLiteHelper.COLUMN_LATITUDE, MySQLiteHelper.COLUMN_LONGITUDE
+            MySQLiteHelper.COLUMN_LATITUDE, MySQLiteHelper.COLUMN_LONGITUDE, MySQLiteHelper.COLUMN_PHOTOREF,
+            MySQLiteHelper.COLUMN_PLACEID
     };
 
     public PlaceDataSource(Context context){
@@ -36,12 +37,14 @@ public class PlaceDataSource {
         dbHelper.close();
     }
 
-    public Place createPlace(String name, String address, double latitude, double longitude) {
+    public Place createPlace(String name, String address, double latitude, double longitude, String photoref, String placeId) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_NAME, name);
         values.put(MySQLiteHelper.COLUMN_ADDRESS, address);
         values.put(MySQLiteHelper.COLUMN_LATITUDE, latitude);
         values.put(MySQLiteHelper.COLUMN_LONGITUDE, longitude);
+        values.put(MySQLiteHelper.COLUMN_PHOTOREF, photoref);
+        values.put(MySQLiteHelper.COLUMN_PLACEID, placeId);
 
         long insertId = database.insert(MySQLiteHelper.TABLE_PLACES, null, values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_PLACES,
@@ -79,6 +82,8 @@ public class PlaceDataSource {
         place.setAddress(cursor.getString(2));
         place.setLatitude(cursor.getDouble(3));
         place.setLongitude(cursor.getDouble(4));
+        place.setPhotoReference(cursor.getString(5));
+        place.setPlaceId(cursor.getString(6));
         return place;
     }
 }

@@ -17,6 +17,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ADDRESS = "address";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_LONGITUDE = "longitude";
+    public static final String COLUMN_PHOTOREF = "photoref";
+    public static final String COLUMN_PLACEID = "placeid";
 
     private static final String DATABASE_NAME = "places.db";
     private static final int DATABASE_VERSION = 1;
@@ -25,7 +27,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_NAME + " text not null,"
             + COLUMN_ADDRESS + " text not null,"
             + COLUMN_LATITUDE + ","
-            + COLUMN_LONGITUDE
+            + COLUMN_LONGITUDE + ","
+            + COLUMN_PHOTOREF + ","
+            + COLUMN_PLACEID
             +");";
 
     public MySQLiteHelper(Context context) {

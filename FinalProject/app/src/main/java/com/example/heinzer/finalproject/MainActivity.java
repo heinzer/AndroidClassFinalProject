@@ -3,22 +3,21 @@ package com.example.heinzer.finalproject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends Activity {
@@ -27,13 +26,11 @@ public class MainActivity extends Activity {
 
     private ShakeEventListener mSensorListener;
 
+    private Place currentPlace;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        pr = new PlacesRetriever();
-        pr.askPermission(this);
-
 
 /*        Place place = new Place();
         place.setLatitude(2.2);
@@ -44,6 +41,7 @@ public class MainActivity extends Activity {
         this.getIntent().putExtra("winningStatus", "You Won!");
         this.getIntent().putExtra("placeDetails", place);*/
 
+        final Button startGameButton = (Button) findViewById(R.id.startgame);
         //Check to see if any extras are sent back from the game
         if(this.getIntent().getExtras() != null) {
             Bundle bundle = this.getIntent().getExtras();
@@ -52,24 +50,37 @@ public class MainActivity extends Activity {
             ll.setGravity(Gravity.BOTTOM);
 
             TextView winningStatus = (TextView) findViewById(R.id.winningStatus);
-            winningStatus.setText(bundle.getString("winningStatus"));
+            winningStatus.setText(bundle.getString("winningMessage"));
+
+            currentPlace = (Place) this.getIntent().getSerializableExtra("place");
 
             TextView placeDetails = (TextView) findViewById(R.id.placeDetails);
-            placeDetails.setText(((Place)this.getIntent().getSerializableExtra("placeDetails")).getFullDetails());
+            placeDetails.setText(currentPlace.getFullDetails());
 
+            if(this.getIntent().getBooleanExtra("won", false)){
+                winningStatus.setTextColor(Color.GREEN);
+            }else{
+                winningStatus.setTextColor(Color.RED);
+            }
+            if(currentPlace.getPhotoReference()!= null){
+                getImage(currentPlace.getPhotoReference());
+            }
+
+
+            startGameButton.setText("Start New Game");
             TextView gestureNote = (TextView) findViewById(R.id.gestureNote);
             gestureNote.setText("Shake to add location to saved places");
         }
 
-        final Button startGameButton = (Button) findViewById(R.id.startgame);
+
         startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent startGameIntent = new Intent(this, CameraActivity.class);
 
         startGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pr.choosePlaces();
                 startGameButton.setText(getResources().getString(R.string.loading));
+                pr.choosePlaces();
                 startGameIntent.putExtra("chosenPlace", pr.getChosenPlace());
                 List<Place> places = pr.getPlacesForGame();
                 System.out.println("SIZE: " + places.size());
@@ -85,7 +96,6 @@ public class MainActivity extends Activity {
         Button placesButton = (Button) findViewById(R.id.placeslist);
         placesButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
         final Intent placesIntent = new Intent(this, PlacesListActivity.class);
-        Bundle data = new Bundle();
 
         placesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +134,25 @@ public class MainActivity extends Activity {
         super.onPause();
     }
 
+    private void getImage(String placeId){
+        String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+placeId+"&key=AIzaSyAYXpuEkh14deoc_ELfoHmQiCGUROT1py4";
+        System.out.println("Finding Image: " + url);
+        final ImageView img = (ImageView) findViewById(R.id.img);
+        new GetImage(this){
+            @Override
+            protected void onPostExecute(Bitmap bitmap){
+                System.out.println("In post execute");
+                if(bitmap != null){
+                    System.out.println("Not Null");
+
+                    img.setImageBitmap(bitmap);
+                    System.out.println("Image should be set");
+
+                }
+            }
+
+        }.execute(url);
+    }
 
 //    private void printLocations(){
 //        List<HashMap<String, String>> nearbyPlacesList =  pr.getplaces();
