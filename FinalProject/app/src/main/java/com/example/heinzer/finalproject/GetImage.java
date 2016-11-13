@@ -51,8 +51,8 @@ public class GetImage extends AsyncTask<String, Bitmap, Long> {
      * @param bitmap
      */
     protected void onProgressUpdate(Bitmap... bitmap) {
-        ImageView img = (ImageView) a.findViewById(R.id.img);
-        img.setImageBitmap(bitmap[0]);
+//        ImageView img = (ImageView) a.findViewById(R.id.img);
+//        img.setImageBitmap(bitmap[0]);
     }
 
     /**

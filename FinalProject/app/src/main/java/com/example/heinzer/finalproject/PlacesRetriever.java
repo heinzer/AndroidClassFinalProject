@@ -31,8 +31,8 @@ public class PlacesRetriever {
     private LocationManager locationManager;
     private Criteria criteria;
 
-    private int PROXIMITY_RADIUS = 10000;
-    private Location latLocation;
+    private int PROXIMITY_RADIUS = 50000;
+    private static Location latLocation;
 
     private String locationsTypes = "restaurant";
     List<Place> nearbyPlacesList = null;
@@ -46,7 +46,7 @@ public class PlacesRetriever {
      * Returns the User's current Location
      * @return user's location
      */
-    public Location getLocation(){
+    public static Location getLocation(){
         return latLocation;
     }
 

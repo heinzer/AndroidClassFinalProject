@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +32,7 @@ import java.util.Random;
  */
 public class CameraActivity extends Activity {
     PlacesRetriever pr;
+    SensorManager sManager;
 
     private Camera camera;
     private CameraPreview preview;
@@ -94,6 +97,12 @@ public class CameraActivity extends Activity {
         preview = new CameraPreview(this, camera);
         FrameLayout prevLayout = (FrameLayout)findViewById(R.id.camera_preview);
         prevLayout.addView(preview);
+        OverlayView overlayView = new OverlayView(getApplicationContext());
+        prevLayout.addView(overlayView);
+
+        sManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        Sensor gyroSensor = sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        sManager.registerListener(new GyroEventListener(), gyroSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         Button backButton = (Button) findViewById(R.id.camera_back);
         final Intent backIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -105,6 +114,11 @@ public class CameraActivity extends Activity {
             }
         });
 
+        Location myLocation = PlacesRetriever.getLocation();
+        Location destination = new Location("");
+        destination.setLatitude(chosenPlace.getLatitude());
+        destination.setLongitude(chosenPlace.getLongitude());
+        System.out.println(myLocation.bearingTo(destination));
 
     }
 
