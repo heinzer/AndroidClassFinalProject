@@ -148,20 +148,22 @@ public class CameraActivity extends Activity implements SensorEventListener{
         sManager.unregisterListener(this,sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION));
     }
 
-    public static Camera getCameraInstance(){
+    public Camera getCameraInstance(){
         Camera c = null;
-        try {
-            c = Camera.open(); // attempt to get a Camera instance
-        }
-        catch (Exception e){
-            // Camera is not available (in use or does not exist)
+        if(cameraHardwarePresent(this.getApplicationContext())){
+            try {
+                c = Camera.open(); // attempt to get a Camera instance
+            }
+            catch (Exception e){
+                // Camera is not available (in use or does not exist)
+            }
         }
         System.out.println(c);
         return c; // returns null if camera is unavailable
     }
 
     /** Check if the device has a camera */
-    private boolean cameraHardwarePresent(Context context) {
+    private static boolean cameraHardwarePresent(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             // camera is present
             return true;
@@ -194,9 +196,7 @@ public class CameraActivity extends Activity implements SensorEventListener{
 
         int distanceInt = (int)distance;
 
-        System.out.println(direction);
         overlay.setBackgroundColor(Color.WHITE);
-
         ViewGroup.LayoutParams params = overlay.getLayoutParams();
 
         if(direction > 20 && direction < 180){
@@ -227,9 +227,6 @@ public class CameraActivity extends Activity implements SensorEventListener{
             overlay.setBackgroundColor(Color.TRANSPARENT);
             overlay.setText("");
         }
-//        System.out.println("----------");
-//        System.out.println("BEARING: " + bearing);
-//        System.out.println("HEADING: " + heading);
 
     }
 

@@ -5,6 +5,7 @@ import android.hardware.Camera;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -30,12 +31,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceCreated(SurfaceHolder holder) {
         // Tell the camera where to draw the preview on the surface.
-        try {
-            mCamera.setPreviewDisplay(holder);
-            mCamera.setDisplayOrientation(90);
-            mCamera.startPreview();
-        } catch (IOException e) {
-            System.out.println("Error setting camera preview: " + e.getMessage());
+        if(mCamera != null){
+            try {
+                mCamera.setPreviewDisplay(holder);
+                mCamera.setDisplayOrientation(90);
+                mCamera.startPreview();
+            } catch (IOException e) {
+                System.out.println("Error setting camera preview: " + e.getMessage());
+            }
+        } else{
+            String str = "Unable to get camera preview";
+            Toast.makeText(this.getContext(), str, Toast.LENGTH_SHORT).show();
         }
     }
 
