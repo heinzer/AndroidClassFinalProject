@@ -45,11 +45,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!isNetworkAvailable()){
-            Toast.makeText(MainActivity.this, "An internet connection is required", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         pr = new PlacesRetriever();
         pr.askPermission(this);
         isPlaceAdded = false;
@@ -157,14 +152,13 @@ public class MainActivity extends Activity {
         // Reset the text on the button to say 'start game'
         final Button startGameButton = (Button) findViewById(R.id.startgame);
         startGameButton.setText(getResources().getString(R.string.start));
-        if(isNetworkAvailable()) {
-            pr.askPermission(this);
-            checkforReady();
+        pr.askPermission(this);
+        checkforReady();
 
-            mSensorManager.registerListener(mSensorListener,
-                    mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                    SensorManager.SENSOR_DELAY_UI);
-        }
+        mSensorManager.registerListener(mSensorListener,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_UI);
+
     }
 
     @Override
@@ -197,13 +191,6 @@ public class MainActivity extends Activity {
         }.execute(url);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
     private void checkforReady(){
         final Button startGameButton = (Button) findViewById(R.id.startgame);
 
@@ -216,10 +203,13 @@ public class MainActivity extends Activity {
                 if(!pr.isDataReady()){
                     startGameButton.setClickable(false);
                     System.out.println("It is not ready");
+                    startGameButton.getBackground().setColorFilter(Color.DKGRAY, PorterDuff.Mode.MULTIPLY);
                     h.removeCallbacks(runnable);
                 }else{
                     startGameButton.setClickable(true);
                     System.out.println("It is ready!!!!");
+                    startGameButton.getBackground().setColorFilter(0xFF5db0ba, PorterDuff.Mode.MULTIPLY);
+
 
                 }
             }
